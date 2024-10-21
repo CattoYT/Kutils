@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm") version "2.0.21"
     id("fabric-loom") version "1.7.1"
     id("maven-publish")
+    
 }
 
 version = project.property("mod_version") as String
@@ -40,6 +41,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
 }
 
 dependencies {
@@ -51,6 +53,15 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
+    implementation("com.adamratzman:spotify-api-kotlin-core:4.1.3")
+
+    implementation("io.ktor:ktor-server-netty:3.0.0")
+    implementation("io.ktor:ktor-server-core:3.0.0")
+    implementation("io.ktor:ktor-server-host-common:3.0.0")
+    implementation("io.ktor:ktor-client-core:3.0.0")
+    implementation("io.ktor:ktor-client-cio:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+
 }
 
 tasks.processResources {
