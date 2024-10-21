@@ -44,6 +44,8 @@ repositories {
     mavenCentral()
 }
 
+
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
@@ -55,11 +57,6 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
     implementation("com.adamratzman:spotify-api-kotlin-core:4.1.3")
 
-    implementation("io.ktor:ktor-server-netty:3.0.0")
-    implementation("io.ktor:ktor-server-core:3.0.0")
-    implementation("io.ktor:ktor-server-host-common:3.0.0")
-    implementation("io.ktor:ktor-client-core:3.0.0")
-    implementation("io.ktor:ktor-client-cio:3.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
 }
