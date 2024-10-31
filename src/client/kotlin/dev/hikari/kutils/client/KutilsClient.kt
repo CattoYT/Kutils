@@ -1,15 +1,12 @@
 package dev.hikari.kutils.client
 
-import dev.hikari.kutils.client.commands.Commands
-import dev.hikari.kutils.client.commands.LinkSpotify
-import dev.hikari.kutils.client.commands.Pause
-import dev.hikari.kutils.client.commands.Test
+import dev.hikari.kutils.client.commands.*
 import dev.hikari.kutils.client.modules.Spotify
 import dev.hikari.kutils.client.utils.FileManager
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.MinecraftClient
-import java.nio.file.Path
-import java.nio.file.Paths
+import net.minecraft.text.Text
+
 
 class KutilsClient : ClientModInitializer {
 
@@ -18,15 +15,42 @@ class KutilsClient : ClientModInitializer {
         logger.info("Hello Fabric world!")
 
 
-        Commands().register()
         LinkSpotify().register()
         Test().register()
         Pause().register()
+        Play().register()
+        Debug().register()
     }
 
     companion object {
+
         val logger = org.slf4j.LoggerFactory.getLogger("Kutils")
         val ConfigManager = FileManager()
         val Spotify = Spotify()
+
+        fun Log(message: String) {
+            MinecraftClient.getInstance().player?.sendMessage(createReturnMessage(message), false)
+        }
+
+        fun Log(message: Text) {
+            MinecraftClient.getInstance().player?.sendMessage(createReturnMessage(message), false)
+        }
+
+        fun createReturnMessage(vararg messages: Any) : Text {
+            val combinedText = Text.literal("(§3Kutils§f) ")
+            messages.forEach { text ->
+                when (text) {
+                    is String -> combinedText.append(Text.literal(text))
+                    is Text -> combinedText.append(text)
+                    else -> throw IllegalArgumentException("Only Text and String types are supported")
+
+                }
+
+            }
+            return combinedText
+        }
+
+
+
     }
 }
