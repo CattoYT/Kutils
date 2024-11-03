@@ -17,17 +17,13 @@ class Test {
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _, _ ->
             dispatcher.register(
                 CommandManager.literal("testspotify")
-                    .then(
-                        CommandManager.argument("ClientID", StringArgumentType.string())
-                            .then(
-                                CommandManager.argument("SecretKey", StringArgumentType.string())
+
                                     .executes {
                                         //KutilsClient.logger.info("Test command executed")
                                         context -> testSpotify()
                                         1
                                     }
-                            )
-                    )
+
             )
 
 
