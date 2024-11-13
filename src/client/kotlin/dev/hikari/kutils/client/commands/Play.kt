@@ -1,6 +1,8 @@
 package dev.hikari.kutils.client.commands
 
 import com.adamratzman.spotify.models.ContextUri
+import com.adamratzman.spotify.models.SearchFilter
+import com.adamratzman.spotify.models.SearchFilterType
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
@@ -9,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.text.Text
 
 class Play {
     fun register() {
@@ -47,6 +50,9 @@ class Play {
                 if (songName != null) {
                     var query = songName
                     KutilsClient.Log("Searching for $query")
+                    if (artist != null) {
+                        query += "%20artist:$artist"
+                    }
                     var RequestedSong = KutilsClient.Spotify.spotifyApi?.search?.searchTrack(query.replace(" ", "&20"))?.items?.getOrNull(0)
 
                     if (RequestedSong != null){
@@ -68,7 +74,7 @@ class Play {
 
             } catch (e: Exception) {
                 KutilsClient.Log("Error pausing Spotify " + e)
-                context.source.sendFeedback({ net.minecraft.text.Text.literal("Failed to pause Spotify!") }, false)
+                context.source.sendFeedback({ Text.literal("Failed to pause Spotify!") }, false)
             }
 
         }

@@ -17,7 +17,7 @@ class Pause {
                         context ->
                         pauseSpotify()
 
-                    1
+                    0
                 }
             )
 
