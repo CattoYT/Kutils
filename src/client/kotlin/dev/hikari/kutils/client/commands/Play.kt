@@ -48,18 +48,28 @@ class Play {
         runBlocking {
             try {
                 if (songName != null) {
-                    var query = songName
+                    var query = "track:$songName "
                     KutilsClient.Log("Searching for $query")
                     if (artist != null) {
-                        query += "%20artist:$artist"
+                        //query += "%20artist:$artist"
+                        query += " artist:$artist"
                     }
-                    var RequestedSong = KutilsClient.Spotify.spotifyApi?.search?.searchTrack(query.replace(" ", "&20"))?.items?.getOrNull(0)
-
+                    var songResults = KutilsClient.Spotify.spotifyApi?.search?.searchTrack(query)?.items;
+                    var RequestedSong = songResults?.getOrNull(0)
+                    for (i in 0..9) {
+                        KutilsClient.Log("Found ${songResults?.getOrNull(i)?.name} by ${songResults?.getOrNull(i)?.artists[0]?.name}")
+                    }
+                    println("Results from query: " + songResults);
                     if (RequestedSong != null){
                         KutilsClient.Log("Playing ${RequestedSong.name} by ${RequestedSong.artists[0].name}")
-                        KutilsClient.Spotify.spotifyApi?.player?.startPlayback(
+                        try{
+                            KutilsClient.Spotify.spotifyApi?.player?.startPlayback(
                             playableUrisToPlay = listOf(RequestedSong.uri),
                         )
+                        } catch (e: Exception) {
+                            KutilsClient.Log("Oh Nyo, are you sure you started Spotify playback? Just play any song from the client!")
+
+                        }
                     }
                     else {
                         KutilsClient.Log("Song not found")

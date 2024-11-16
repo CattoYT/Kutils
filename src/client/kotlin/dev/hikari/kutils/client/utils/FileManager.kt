@@ -9,36 +9,42 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-@Serializable
-data class Config(
-    val clientID: String,
-    val clientSecret: String
-)
+
 
 class FileManager {
     companion object {
         val kutilsDir: Path = Paths.get(MinecraftClient.getInstance().runDirectory.toString(), "kutils")
-        var config: Config? = FileManager().readConfig()
     }
 
-    fun readConfig(): Config? {
+    fun readConfig(): String? {
         val configFile = kutilsDir.resolve("config.json")
         return if (Files.exists(configFile)) {
-            val jsonString = Files.readString(configFile)
-            Json.decodeFromString<Config>(jsonString)
+            Files.readString(configFile)
         } else {
             null
         }
     }
 
-    fun writeConfig(key: String, value: String) {
-        config = Config(key, value)
-        writeConfigFile(config!!)
+    fun writeConfig(key: String) {
+
+        writeConfigFile(key)
     }
 
-    fun writeConfigFile(config: Config) {
+    fun writeConfigFile() {
         val configFile = kutilsDir.resolve("config.json")
-        val jsonString = Json.encodeToString(config)
-        Files.writeString(configFile, jsonString)
+        if (!Files.exists(kutilsDir)) {
+            Files.createDirectories(kutilsDir)
+            Files.createFile(configFile)
+        }
+
+    }
+    fun writeConfigFile(config : String) {
+        val configFile = kutilsDir.resolve("config.json")
+//        val jsonString = Json.encodeToString(config)
+//        if (!Files.exists(kutilsDir)) {
+//            Files.createDirectories(kutilsDir)
+//            Files.createFile(configFile)
+//        }
+        Files.writeString(configFile, config)
     }
 }
