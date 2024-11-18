@@ -1,5 +1,6 @@
 package dev.hikari.kutils.client.utils
 
+import dev.hikari.kutils.client.KutilsClient
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,18 +17,39 @@ class FileManager {
         val kutilsDir: Path = Paths.get(MinecraftClient.getInstance().runDirectory.toString(), "kutils")
     }
 
-    fun readConfig(): String? {
-        val configFile = kutilsDir.resolve("config.json")
-        return if (Files.exists(configFile)) {
-            Files.readString(configFile)
-        } else {
-            null
-        }
-    }
 
     fun writeConfig(key: String) {
-
         writeConfigFile(key)
+    }
+
+    fun writeToken(token : String) {
+        val configFile = kutilsDir.resolve("token")
+        if (!Files.exists(configFile)) {
+            Files.createDirectories(kutilsDir)
+            Files.createFile(configFile)
+        }
+
+        var (eToken , iv) = Encryption().encrypt(token)
+        Files.writeString(configFile, eToken + "|" + iv)
+        println("Written token to file")
+    }
+
+
+    fun readEncryptedToken(): String? {
+        val configFile = kutilsDir.resolve("token")
+
+        try {
+            val (eToken, iv) = Files.readString(configFile).split("|")
+            if (eToken != null || iv != null) {
+                return Encryption().decrypt(eToken, iv)
+            }
+            throw Exception()
+        } catch (e: Exception) {
+            KutilsClient.logger.info("Token file not found or is empty! Skipping Spotify restore...")
+            println(e)
+            return null
+        }
+
     }
 
     fun writeConfigFile() {

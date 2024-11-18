@@ -41,8 +41,48 @@ class Play {
             )))
 
         })
+        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _, _ ->
+            dispatcher.register(
+                CommandManager.literal("queue")
+
+                    .executes {
+                        //KutilsClient.logger.info("Test command executed")
+                            context ->
+                        playSpotify(context)
+
+                    }
+                    .then(
+                        CommandManager.argument("Request", StringArgumentType.string())
+                            .executes {
+                                    context ->
+                                queueManager(context)
+                                1
+                            }.then(
+                                CommandManager.argument("Song", StringArgumentType.string())
+                                    .executes {
+                                            context ->
+                                        queueManager(context)
+                                        1
+                                    }
+                            )))
+
+        })
 
     }
+
+    fun queueManager(context : CommandContext<ServerCommandSource>) : Int {
+        if (StringArgumentType.getString(context, "Request") == "add") {
+            KutilsClient.Log("Adding song to queue")
+        }
+        else if (StringArgumentType.getString(context, "Request") == "skip") {
+            KutilsClient.Log("Removing song from queue")
+        }
+        else {
+            KutilsClient.Log("Invalid request")
+        }
+        return 0
+    }
+
     fun playSpotify(context : CommandContext<ServerCommandSource>, songName : String? = null, artist : String? = null) : Int {
 
         runBlocking {

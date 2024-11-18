@@ -21,6 +21,7 @@ class KutilsClient : ClientModInitializer {
         Test().register()
         Pause().register()
         Play().register()
+        Playing().register()
         Debug().register()
     }
 

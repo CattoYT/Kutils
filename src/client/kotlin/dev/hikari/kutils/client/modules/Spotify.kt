@@ -6,6 +6,7 @@ import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.spotifyClientPkceApi
 import dev.hikari.kutils.client.KutilsClient
 import com.sun.net.httpserver.HttpServer
+import dev.hikari.kutils.client.utils.Encryption
 import dev.hikari.kutils.client.utils.FileManager
 import java.net.InetSocketAddress
 import kotlinx.coroutines.runBlocking
@@ -74,9 +75,14 @@ class Spotify {
                     // Now that we have the code, initialize the Spotify API
                     runBlocking{
                         spotifyApi = createSpotifyApi(clientID!!, authorizationCode)
-                        KutilsClient.ConfigManager.writeConfig(spotifyApi?.token?.refreshToken.toString())
+                        KutilsClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+
+                    }
+                    if (spotifyApi != null) {
+                        KutilsClient.logger.info("Successfully created Spotify API")
                         server.stop(0)
                     }
+
                     // Handle the  code here (e.g., exchange it for a token)
                 } else {
                     exchange.sendResponseHeaders(400, 0)
@@ -95,9 +101,9 @@ class Spotify {
 
     }
     private fun restoreSpotifyApi() {
-        println("Restoring Spotify API")
-        var code = Files.readString(FileManager.kutilsDir.resolve("config.json"))
-            if (code.isNotEmpty()) {
+        KutilsClient.logger.info("Restoring Spotify API")
+        var code = KutilsClient.ConfigManager.readEncryptedToken()
+            if (code != null) {
                 KutilsClient.logger.info("Found existing authorization code")
                 runBlocking {
                     try {

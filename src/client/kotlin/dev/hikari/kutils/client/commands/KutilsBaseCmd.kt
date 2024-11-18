@@ -3,6 +3,7 @@ package dev.hikari.kutils.client.commands;
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
+import dev.hikari.kutils.Kutils
 import dev.hikari.kutils.client.KutilsClient
 import dev.hikari.kutils.client.modules.Spotify
 import dev.hikari.kutils.client.utils.ColorHelper
@@ -33,7 +34,12 @@ class KutilsBaseCmd {
                                 KutilsClient.logger.info("Test command executed")
                                 if (StringArgumentType.getString(context, "Debug Argument") == "reloadSpotify") {
                                     KutilsClient.Spotify = Spotify()
+                                } else if (StringArgumentType.getString(context, "Debug Argument") == "writeToken") {
+                                    KutilsClient.ConfigManager.writeToken(KutilsClient.Spotify.spotifyApi?.token?.refreshToken.toString())
+
                                 }
+
+
                                 1
                             }
                     )
@@ -47,6 +53,6 @@ class KutilsBaseCmd {
         context.source.sendFeedback(
             {Text.literal("" +
                     ColorHelper.AQUA + "Kutils " + ColorHelper.WHITE + "${"${ColorHelper.GREEN}${KutilsClient.version}${ColorHelper.WHITE}"}" +
-                    "\nA small utilty mod that adds a ton of utility such as spotify integration!")}, false)
+                    "\nA small utilty mod that adds some utility features such as spotify integration!")}, false)
     }
 }
