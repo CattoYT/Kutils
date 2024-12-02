@@ -12,7 +12,7 @@ class Playing {
     fun register() {
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _, _ ->
             dispatcher.register(
-                CommandManager.literal("pause")
+                CommandManager.literal("playing")
                     .executes {
                         //KutilsClient.logger.info("Test command executed")
                             context ->

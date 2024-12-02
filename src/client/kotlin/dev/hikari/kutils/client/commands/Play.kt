@@ -99,13 +99,13 @@ class Play {
                     for (i in 0..9) {
                         KutilsClient.Log("Found ${songResults?.getOrNull(i)?.name} by ${songResults?.getOrNull(i)?.artists[0]?.name}")
                     }
-                    println("Results from query: " + songResults);
                     if (RequestedSong != null){
                         KutilsClient.Log("Playing ${RequestedSong.name} by ${RequestedSong.artists[0].name}")
                         try{
                             KutilsClient.Spotify.spotifyApi?.player?.startPlayback(
                             playableUrisToPlay = listOf(RequestedSong.uri),
                         )
+                            println(KutilsClient.Spotify.spotifyApi?.token?.refreshToken)
                         } catch (e: Exception) {
                             KutilsClient.Log("Oh Nyo, are you sure you started Spotify playback? Just play any song from the client!")
 

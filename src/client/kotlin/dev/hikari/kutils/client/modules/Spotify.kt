@@ -112,8 +112,11 @@ class Spotify {
                             tokenType = "Bearer",
                             refreshToken = code,
                             scopeString = "user-read-playback-state user-modify-playback-state app-remote-control",
-                            expiresIn = -0, // time-to-live in seconds, can be arbitrary initially
+                            expiresIn = 1, // time-to-live in seconds, can be arbitrary initially
                         )
+
+
+
                         spotifyApi = spotifyClientPkceApi(
                             clientId = clientID,
                             redirectUri  = "http://localhost:8080",
@@ -125,6 +128,15 @@ class Spotify {
 
                         if (spotifyApi != null) {
                             KutilsClient.logger.info("Successfully restored Spotify API")
+                            // check if the new token is rvalid
+                            if (spotifyApi?.isTokenValid()?.isValid == true) {
+                                KutilsClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+
+                            }
+                            else {
+                                KutilsClient.Log("Token is invalid, retry ig")
+                            }
+
                         }
                         return@runBlocking
                     } catch (e: Exception) {
