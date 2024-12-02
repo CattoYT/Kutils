@@ -17,6 +17,6 @@ A Minecraft mod for Hack Club!
 
 # DISCLAIMER!!!
 
-I'm not responsible if your token is stolen, that isn't really my problem. I did my best to protect it. Stay safe! (I'm not a good dev)
+While this mod does encrypt your token, there is still a risk of it being stolen! Stay safe!
 
 *If you actually try to steal someone's token from this mod, then please seek therapy*

@@ -72,6 +72,7 @@ class Encryption {
         val keyBytes = keyFactory.generateSecret(keySpec).encoded
         
         // Return the key as a Base64 string
+        println("Finished encrypting")
         return Base64.getEncoder().encodeToString(keyBytes)
     }
 

@@ -103,38 +103,38 @@ class Spotify {
     private fun restoreSpotifyApi() {
         KutilsClient.logger.info("Restoring Spotify API")
         var code = KutilsClient.ConfigManager.readEncryptedToken()
-            if (code != null) {
-                KutilsClient.logger.info("Found existing authorization code")
-                runBlocking {
-                    try {
-                        val token = Token(
-                            accessToken = "skibidi", // optional, use an empty string if unknown
-                            tokenType = "Bearer",
-                            refreshToken = code,
-                            scopeString = "user-read-playback-state user-modify-playback-state app-remote-control",
-                            expiresIn = -0, // time-to-live in seconds, can be arbitrary initially
-                        )
-                        spotifyApi = spotifyClientPkceApi(
-                            clientId = clientID,
-                            redirectUri  = "http://localhost:8080",
-                            token = token
-                        ) {
-                            automaticRefresh = true
-                        }.build()
+        if (code != null) {
+            KutilsClient.logger.info("Found existing authorization code")
+            runBlocking {
+                try {
+                    val token = Token(
+                        accessToken = "skibidi", // optional, use an empty string if unknown
+                        tokenType = "Bearer",
+                        refreshToken = code,
+                        scopeString = "user-read-playback-state user-modify-playback-state app-remote-control",
+                        expiresIn = -0, // time-to-live in seconds, can be arbitrary initially
+                    )
+                    spotifyApi = spotifyClientPkceApi(
+                        clientId = clientID,
+                        redirectUri  = "http://localhost:8080",
+                        token = token
+                    ) {
+                        automaticRefresh = true
+                    }.build()
 
 
-                        if (spotifyApi != null) {
-                            KutilsClient.logger.info("Successfully restored Spotify API")
-                        }
-                        return@runBlocking
-                    } catch (e: Exception) {
-                        KutilsClient.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
-
+                    if (spotifyApi != null) {
+                        KutilsClient.logger.info("Successfully restored Spotify API")
                     }
+                    return@runBlocking
+                } catch (e: Exception) {
+                    KutilsClient.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
+
                 }
-            } else {
-                KutilsClient.logger.info("No existing authorization code found")
             }
+        } else {
+            KutilsClient.logger.info("No existing authorization code found")
+        }
 
     }
 }
