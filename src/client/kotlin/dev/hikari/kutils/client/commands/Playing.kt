@@ -30,11 +30,11 @@ class Playing {
         KutilsClient.logger.info("Pause Spotify command executed")
         runBlocking {
 
-                var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name
+                var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
                 if (currentlyPlaying == null) {
                     KutilsClient.Log("No song is currently playing")
                 } else {
-                    KutilsClient.Log("Currently Playing: $currentlyPlaying")
+                    KutilsClient.Log("Currently Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
                 }
 
         }
