@@ -103,6 +103,7 @@ class Spotify {
     private fun restoreSpotifyApi() {
         KutilsClient.logger.info("Restoring Spotify API")
         var code = KutilsClient.ConfigManager.readEncryptedToken()
+            println(code)
             if (code != null) {
                 KutilsClient.logger.info("Found existing authorization code")
                 runBlocking {
@@ -127,7 +128,11 @@ class Spotify {
 
 
                         if (spotifyApi != null) {
-                            KutilsClient.logger.info("Successfully restored Spotify API")
+                            if (spotifyApi?.isTokenValid()?.isValid == false) {
+                                KutilsClient.logger.info("Successfully restored Spotify API")
+                                KutilsClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+                                return@runBlocking
+                            }
                         }
                         return@runBlocking
                     } catch (e: Exception) {
