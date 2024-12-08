@@ -7,11 +7,10 @@ A Minecraft mod for Hack Club!
 - [x] play 
 - [x] play song from title 
 - [x] play song from title and artist
-- [ ] share song to chat
+- [x] share song to chat
 - [x] a command to get version info
 - [x] a command to show whats playing
 - [ ] create a song queue (add, remove, etc)
-- [ ] control volume from keybinds
 
 
 

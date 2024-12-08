@@ -33,7 +33,7 @@ class Share {
         runBlocking {
             var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.href.toString().replace("https://api.spotify.com/v1/tracks/", "https://open.spotify.com/track/")
             println(currentlyPlaying)
-            val clickableText = Text.literal("Click me to link Spotify!")
+            val clickableText = Text.literal("Currently playing " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name)
                 .setStyle(
                     Style.EMPTY
                         .withColor(Formatting.AQUA)
@@ -41,7 +41,11 @@ class Share {
                         .withUnderline(true)
                         .withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, currentlyPlaying))
                 )
-            MinecraftClient.getInstance().getNetworkHandler()?.sendPacket(ChatMessageC2SPacket("/say Hello from MyFabricMod!"))
+            MinecraftClient.getInstance().networkHandler?.sendChatMessage(
+                "I'm currently listening to " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name +
+                        " by " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.artists?.get(0)?.name)
+            MinecraftClient.getInstance().networkHandler?.sendChatMessage(
+                "Here's the web link! " + currentlyPlaying)
         }
     }
 }

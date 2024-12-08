@@ -16,7 +16,7 @@ class Playing {
                     .executes {
                         //KutilsClient.logger.info("Test command executed")
                             context ->
-                                WhatIsPlaying()
+                                KutilsClient.Spotify.WhatIsPlaying()
 
                         0
                     }
@@ -26,18 +26,5 @@ class Playing {
 
     }
 
-    fun WhatIsPlaying() {
-        KutilsClient.logger.info("Pause Spotify command executed")
-        runBlocking {
 
-                var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
-                if (currentlyPlaying == null) {
-                    KutilsClient.Log("No song is currently playing")
-                } else {
-                    KutilsClient.Log("Currently Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
-                }
-
-        }
-
-    }
 }

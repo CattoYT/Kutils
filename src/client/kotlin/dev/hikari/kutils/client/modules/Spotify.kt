@@ -96,9 +96,6 @@ class Spotify {
             KutilsClient.logger.error("This port is already in use!")
             return
         }
-
-
-
     }
     private fun restoreSpotifyApi() {
         KutilsClient.logger.info("Restoring Spotify API")
@@ -144,5 +141,18 @@ class Spotify {
                 KutilsClient.logger.info("No existing authorization code found")
             }
 
+    }
+    fun WhatIsPlaying() {
+        KutilsClient.logger.info("Pause Spotify command executed")
+        runBlocking {
+
+            var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
+            if (currentlyPlaying == null) {
+                KutilsClient.Log("No song is currently playing")
+            } else {
+                KutilsClient.Log("Currently Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
+            }
+
+        }
     }
 }
