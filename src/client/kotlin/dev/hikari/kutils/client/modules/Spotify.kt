@@ -150,7 +150,7 @@ class Spotify {
             if (currentlyPlaying == null) {
                 KutilsClient.Log("No song is currently playing")
             } else {
-                KutilsClient.Log("Currently Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
+                KutilsClient.Log("Now Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
             }
 
         }

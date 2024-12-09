@@ -56,6 +56,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
     implementation("com.adamratzman:spotify-api-kotlin-core:4.1.3")
+    implementation("org.kotlincrypto:secure-random:0.3.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 

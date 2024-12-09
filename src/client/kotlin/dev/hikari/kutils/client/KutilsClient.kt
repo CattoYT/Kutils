@@ -18,11 +18,10 @@ class KutilsClient : ClientModInitializer {
 
         KutilsBaseCmd().register()
         LinkSpotify().register()
-        Test().register()
         Pause().register()
         Play().register()
         Playing().register()
-        Debug().register()
+        //Debug().register()
         Share().register()
     }
 
