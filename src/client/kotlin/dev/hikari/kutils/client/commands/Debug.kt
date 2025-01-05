@@ -12,13 +12,11 @@ class Debug {
                 dispatcher.register(
                         CommandManager.literal("debug")
                                 .executes {
-            KutilsClient.logger.info("Test command executed")
-            //context ->
+                                    KutilsClient.logger.info("Test command executed")
+                                    //context ->
 
-            1
-        }
-            )
-
+                                    1
+                                })
         })
 
     }

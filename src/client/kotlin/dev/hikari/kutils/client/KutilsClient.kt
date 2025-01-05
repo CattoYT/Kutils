@@ -23,6 +23,7 @@ class KutilsClient : ClientModInitializer {
         Playing().register()
         //Debug().register()
         Share().register()
+        Playlist().register()
     }
 
     companion object {

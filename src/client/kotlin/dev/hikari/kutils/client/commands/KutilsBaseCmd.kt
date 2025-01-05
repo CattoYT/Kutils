@@ -37,6 +37,8 @@ class KutilsBaseCmd {
                                 } else if (StringArgumentType.getString(context, "Debug Argument") == "writeToken") {
                                     KutilsClient.ConfigManager.writeToken(KutilsClient.Spotify.spotifyApi?.token?.refreshToken.toString())
 
+                                } else if (StringArgumentType.getString(context, "Debug Argument") == "initmodule") {
+                                    Playlist().register()
                                 }
 
 
