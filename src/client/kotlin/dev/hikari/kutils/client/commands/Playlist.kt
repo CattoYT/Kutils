@@ -16,42 +16,31 @@ class Playlist {
          CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _, _ ->
              dispatcher.register(
                  CommandManager.literal("playlist")
-                     .then(
-                         CommandManager.argument("subcmd", StringArgumentType.string())
-                             .then(
-                                 CommandManager.argument("arg", StringArgumentType.string())
-                             .executes {
-                                    context ->
-                                    when (StringArgumentType.getString(context, "subcmd")) {
-                                        "add" -> context.source.sendFeedback(
-                                            {Text.literal("Usage: /playlist add {songName. NOT IMPLEMENTED}")}, false)
-                                        "play" -> playPlaylist(StringArgumentType.getString(context, "arg"))
-                                        else -> { // Note the block
-                                            print("x is neither 1 nor 2")
-                                        }
-                                    }
-
-                                        playPlaylist(StringArgumentType.getString(context, "add"))
-
-                             }
                      .executes {
                          //KutilsClient.logger.info("Test command executed")
-                         context ->
+                             context ->
                          context.source.sendFeedback(
-                             {Text.literal("Usage: /playlist play {PlaylistName}")}, false)
-
+                             {Text.literal("Usage: /playlist {PlaylistName}")}, false)
 
 
                          0
-                 }
-             )))
+                     }
+                     .then(
+                         CommandManager.argument("arg", StringArgumentType.string())
+                             .executes {
+                                    context ->
+                                        playPlaylist(StringArgumentType.getString(context, "arg"))
+                             }
+
+             ))
          })
     }
 
     fun playPlaylist(name: String) : Int  {
+        println(name)
         return runBlocking {
             for (playlist in KutilsClient.Spotify.spotifyApi?.playlists?.getClientPlaylists()!!) {
-
+                println(playlist.name)
                 if (playlist.name == name) {
                     try{
                         KutilsClient.Spotify.spotifyApi!!.player.startPlayback(playlistId = playlist.id)
