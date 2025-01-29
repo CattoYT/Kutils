@@ -1,10 +1,10 @@
-package dev.hikari.kutils
+package dev.hikari.commandspotify
 
 import net.fabricmc.api.ModInitializer
 
 
 
-class Kutils : ModInitializer {
+class CommandSpotify : ModInitializer {
 
 
     override fun onInitialize() {

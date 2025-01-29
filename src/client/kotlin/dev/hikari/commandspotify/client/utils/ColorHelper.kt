@@ -1,4 +1,4 @@
-package dev.hikari.kutils.client.utils
+package dev.hikari.commandspotify.client.utils
 
 enum class ColorHelper(val code: String) {
     BLACK("§0"),

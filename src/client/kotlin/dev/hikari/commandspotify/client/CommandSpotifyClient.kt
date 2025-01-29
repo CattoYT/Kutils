@@ -1,27 +1,27 @@
-package dev.hikari.kutils.client
+package dev.hikari.commandspotify.client
 
-import dev.hikari.kutils.client.commands.*
-import dev.hikari.kutils.client.modules.Spotify
-import dev.hikari.kutils.client.utils.FileManager
+import dev.hikari.commandspotify.client.commands.*
+import dev.hikari.commandspotify.client.modules.Spotify
+import dev.hikari.commandspotify.client.utils.FileManager
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
+import org.slf4j.LoggerFactory
 
 
-class KutilsClient : ClientModInitializer {
+class CommandSpotifyClient : ClientModInitializer {
 
 
     override fun onInitializeClient() {
         logger.info("Hello Fabric world!")
 
 
-        KutilsBaseCmd().register()
+        CommandSpotifyBaseCmd().register()
         LinkSpotify().register()
         Pause().register()
         Play().register()
         Playing().register()
-        //Debug().register()
         Share().register()
         Playlist().register()
     }
@@ -29,9 +29,9 @@ class KutilsClient : ClientModInitializer {
     companion object {
 
         val version =
-            FabricLoader.getInstance().getModContainer("kutils").map { it.metadata.version.friendlyString }.orElse(null)
+            FabricLoader.getInstance().getModContainer("commandspotify").map { it.metadata.version.friendlyString }.orElse(null)
 
-        val logger = org.slf4j.LoggerFactory.getLogger("Kutils")
+        val logger = LoggerFactory.getLogger("")
         val ConfigManager = FileManager()
         var Spotify = Spotify()
 
@@ -44,7 +44,7 @@ class KutilsClient : ClientModInitializer {
         }
 
         fun createReturnMessage(vararg messages: Any): Text {
-            val combinedText = Text.literal("(§3Kutils§f) ")
+            val combinedText = Text.literal("(§3CommandSpotify§f) ")
             messages.forEach { text ->
                 when (text) {
                     is String -> combinedText.append(Text.literal(text))

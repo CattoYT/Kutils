@@ -1,12 +1,11 @@
-package dev.hikari.kutils.client.commands;
+package dev.hikari.commandspotify.client.commands;
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import dev.hikari.kutils.Kutils
-import dev.hikari.kutils.client.KutilsClient
-import dev.hikari.kutils.client.modules.Spotify
-import dev.hikari.kutils.client.utils.ColorHelper
+import dev.hikari.commandspotify.client.CommandSpotifyClient
+import dev.hikari.commandspotify.client.modules.Spotify
+import dev.hikari.commandspotify.client.utils.ColorHelper
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 
 import net.minecraft.server.command.CommandManager
@@ -14,16 +13,16 @@ import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.Text
 
 
-class KutilsBaseCmd {
+class CommandSpotifyBaseCmd {
     fun register() {
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher: CommandDispatcher<ServerCommandSource>, _, _ ->
             dispatcher.register(
-                CommandManager.literal("kutils")
+                CommandManager.literal("commandspotify")
                     .executes {
                         context ->
                         {
                             displayInfo(context)
-                            KutilsClient.logger.info("Kutils command executed")
+                            CommandSpotifyClient.logger.info("CommandSpotify command executed")
                         }
 
                         1
@@ -31,11 +30,11 @@ class KutilsBaseCmd {
                         CommandManager.argument("Debug Argument", StringArgumentType.string())
                             .executes {
                                 context ->
-                                KutilsClient.logger.info("Test command executed")
+                                CommandSpotifyClient.logger.info("Test command executed")
                                 if (StringArgumentType.getString(context, "Debug Argument") == "reloadSpotify") {
-                                    KutilsClient.Spotify = Spotify()
+                                    CommandSpotifyClient.Spotify = Spotify()
                                 } else if (StringArgumentType.getString(context, "Debug Argument") == "writeToken") {
-                                    KutilsClient.ConfigManager.writeToken(KutilsClient.Spotify.spotifyApi?.token?.refreshToken.toString())
+                                    CommandSpotifyClient.ConfigManager.writeToken(CommandSpotifyClient.Spotify.spotifyApi?.token?.refreshToken.toString())
 
                                 } else if (StringArgumentType.getString(context, "Debug Argument") == "initmodule") {
                                     Playlist().register()
@@ -54,7 +53,7 @@ class KutilsBaseCmd {
     fun displayInfo(context: CommandContext<ServerCommandSource>) {
         context.source.sendFeedback(
             {Text.literal("" +
-                    ColorHelper.AQUA + "Kutils " + ColorHelper.WHITE + "${"${ColorHelper.GREEN}${KutilsClient.version}${ColorHelper.WHITE}"}" +
-                    "\nA small utilty mod that adds some utility features such as spotify integration!")}, false)
+                    ColorHelper.AQUA + "Command Spotify " + ColorHelper.WHITE + "${"${ColorHelper.GREEN}${CommandSpotifyClient.version}${ColorHelper.WHITE}"}" +
+                    "\nA small utilty mod that adds Spotify integration to Minecraft!")}, false)
     }
 }

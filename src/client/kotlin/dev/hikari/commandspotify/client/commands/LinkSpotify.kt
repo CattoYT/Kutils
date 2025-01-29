@@ -1,8 +1,8 @@
-package dev.hikari.kutils.client.commands
+package dev.hikari.commandspotify.client.commands
 
 import com.adamratzman.spotify.*
 import com.mojang.brigadier.CommandDispatcher
-import dev.hikari.kutils.client.KutilsClient
+import dev.hikari.commandspotify.client.CommandSpotifyClient
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
@@ -20,7 +20,7 @@ class LinkSpotify {
                 CommandManager.literal("linkspotify")
 
                                     .executes {
-                                        //KutilsClient.logger.info("Test command executed")
+                                        //CommandSpotifyClient.logger.info("Test command executed")
                                         context -> testSpotify()
                                         1
                                     }
@@ -51,7 +51,7 @@ class LinkSpotify {
             codeChallenge = codeChallenge
         )
 
-        KutilsClient.Spotify.initialize(
+        CommandSpotifyClient.Spotify.initialize(
             "a9e2b8d829d648f7ac6fac3dce2567cd",
             codeVerifier
         )
@@ -62,7 +62,7 @@ class LinkSpotify {
                     .withUnderline(true)
                     .withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, url))
             )
-        KutilsClient.Log(clickableText)
+        CommandSpotifyClient.Log(clickableText)
 
     }
 }

@@ -1,4 +1,4 @@
-package dev.hikari.kutils.client.utils
+package dev.hikari.commandspotify.client.utils
 import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -8,7 +8,6 @@ import java.util.Base64
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.io.BufferedReader
-import java.io.InputStreamReader
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 class Encryption {

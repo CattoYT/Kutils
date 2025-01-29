@@ -1,16 +1,13 @@
-package dev.hikari.kutils.client.modules
+package dev.hikari.commandspotify.client.modules
 
 import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.spotifyClientPkceApi
-import dev.hikari.kutils.client.KutilsClient
+import dev.hikari.commandspotify.client.CommandSpotifyClient
 import com.sun.net.httpserver.HttpServer
-import dev.hikari.kutils.client.utils.Encryption
-import dev.hikari.kutils.client.utils.FileManager
 import java.net.InetSocketAddress
 import kotlinx.coroutines.runBlocking
-import java.nio.file.Files
+import java.net.BindException
 
 class Spotify {
 
@@ -28,7 +25,7 @@ class Spotify {
     fun initialize(clientID: String, codeVerifier: String) {
         this.clientID = clientID
         this.codeVerifier = codeVerifier
-        KutilsClient.logger.info("Initializing Spotify module")
+        CommandSpotifyClient.logger.info("Initializing Spotify module")
         // Open the localhost server to capture the authorization code
 
 
@@ -49,7 +46,7 @@ class Spotify {
                 automaticRefresh = true
             }.build()
         } catch (e: Exception) {
-            KutilsClient.logger.error("Failed to create Spotify API: ${e.message}")
+            CommandSpotifyClient.logger.error("Failed to create Spotify API: ${e.message}")
             null
         }
     }
@@ -62,11 +59,11 @@ class Spotify {
             val server = HttpServer.create(InetSocketAddress(8080), 0)
             server.createContext("/") { exchange ->
                 val queryParams = exchange.requestURI.query
-                KutilsClient.logger.info(queryParams)
+                CommandSpotifyClient.logger.info(queryParams)
                 if (queryParams != null && queryParams.contains("code")) {
                     val authorizationCode = queryParams.split("=")[1]
                     val response = "Code received! You may now close this tab."
-                    KutilsClient.logger.info(authorizationCode)
+                    CommandSpotifyClient.logger.info(authorizationCode)
                     exchange.sendResponseHeaders(200, response.length.toLong())
                     exchange.responseBody.write(response.toByteArray())
                     exchange.responseBody.close()
@@ -75,11 +72,11 @@ class Spotify {
                     // Now that we have the code, initialize the Spotify API
                     runBlocking{
                         spotifyApi = createSpotifyApi(clientID!!, authorizationCode)
-                        KutilsClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+                        CommandSpotifyClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
 
                     }
                     if (spotifyApi != null) {
-                        KutilsClient.logger.info("Successfully created Spotify API")
+                        CommandSpotifyClient.logger.info("Successfully created Spotify API")
                         server.stop(0)
                     }
 
@@ -92,17 +89,17 @@ class Spotify {
             server.start()
         }
 
-        catch (e: java.net.BindException) {
-            KutilsClient.logger.error("This port is already in use!")
+        catch (e: BindException) {
+            CommandSpotifyClient.logger.error("This port is already in use!")
             return
         }
     }
     private fun restoreSpotifyApi() {
-        KutilsClient.logger.info("Restoring Spotify API")
-        var code = KutilsClient.ConfigManager.readEncryptedToken()
+        CommandSpotifyClient.logger.info("Restoring Spotify API")
+        var code = CommandSpotifyClient.ConfigManager.readEncryptedToken()
             println(code)
             if (code != null) {
-                KutilsClient.logger.info("Found existing authorization code")
+                CommandSpotifyClient.logger.info("Found existing authorization code")
                 runBlocking {
                     try {
                         val token = Token(
@@ -126,31 +123,31 @@ class Spotify {
 
                         if (spotifyApi != null) {
                             if (spotifyApi?.isTokenValid()?.isValid == false) {
-                                KutilsClient.logger.info("Successfully restored Spotify API")
-                                KutilsClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+                                CommandSpotifyClient.logger.info("Successfully restored Spotify API")
+                                CommandSpotifyClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
                                 return@runBlocking
                             }
                         }
                         return@runBlocking
                     } catch (e: Exception) {
-                        KutilsClient.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
+                        CommandSpotifyClient.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
 
                     }
                 }
             } else {
-                KutilsClient.logger.info("No existing authorization code found")
+                CommandSpotifyClient.logger.info("No existing authorization code found")
             }
 
     }
     fun WhatIsPlaying() {
-        KutilsClient.logger.info("Pause Spotify command executed")
+        CommandSpotifyClient.logger.info("Pause Spotify command executed")
         runBlocking {
 
-            var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
+            var currentlyPlaying = CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
             if (currentlyPlaying == null) {
-                KutilsClient.Log("No song is currently playing")
+                CommandSpotifyClient.Log("No song is currently playing")
             } else {
-                KutilsClient.Log("Now Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
+                CommandSpotifyClient.Log("Now Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
             }
 
         }

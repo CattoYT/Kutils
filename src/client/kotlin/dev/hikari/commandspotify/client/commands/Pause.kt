@@ -1,7 +1,7 @@
-package dev.hikari.kutils.client.commands
+package dev.hikari.commandspotify.client.commands
 
 import com.mojang.brigadier.CommandDispatcher
-import dev.hikari.kutils.client.KutilsClient
+import dev.hikari.commandspotify.client.CommandSpotifyClient
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import kotlinx.coroutines.runBlocking
 import net.minecraft.server.command.CommandManager
@@ -13,7 +13,7 @@ class Pause {
             dispatcher.register(
                 CommandManager.literal("pause")
                     .executes {
-                        //KutilsClient.logger.info("Test command executed")
+                        //CommandSpotifyClient.logger.info("Test command executed")
                         context ->
                         pauseSpotify()
 
@@ -26,14 +26,14 @@ class Pause {
     }
 
     fun pauseSpotify() = runBlocking {
-        KutilsClient.logger.info("Pause Spotify command executed")
+        CommandSpotifyClient.logger.info("Pause Spotify command executed")
         runBlocking {
             try {
-                KutilsClient.Spotify.spotifyApi?.player?.pause()
-                KutilsClient.Log("Paused Spotify")
+                CommandSpotifyClient.Spotify.spotifyApi?.player?.pause()
+                CommandSpotifyClient.Log("Paused Spotify")
             } catch (e: Exception) {
-                KutilsClient.logger.error("Error pausing Spotify " + e)
-                KutilsClient.Log("Failed to pause Spotify!")
+                CommandSpotifyClient.logger.error("Error pausing Spotify " + e)
+                CommandSpotifyClient.Log("Failed to pause Spotify!")
                 }
         }
 

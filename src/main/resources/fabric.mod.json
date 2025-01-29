@@ -7,22 +7,18 @@
   "authors": [],
   "contact": {},
   "license": "All-Rights-Reserved",
-  "icon": "assets/kutils/icon.png",
+
   "environment": "client",
   "entrypoints": {
     "client": [
-      "dev.hikari.kutils.client.KutilsClient"
+      "dev.hikari.commandspotify.client.CommandSpotifyClient"
     ],
     "main": [
-      "dev.hikari.kutils.Kutils"
+      "dev.hikari.commandspotify.CommandSpotify"
     ]
   },
   "mixins": [
-    "kutils.mixins.json",
-    {
-      "config": "kutils.client.mixins.json",
-      "environment": "client"
-    }
+
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

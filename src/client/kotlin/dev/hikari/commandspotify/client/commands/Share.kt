@@ -1,11 +1,10 @@
-package dev.hikari.kutils.client.commands;
+package dev.hikari.commandspotify.client.commands;
 
 import com.mojang.brigadier.CommandDispatcher
-import dev.hikari.kutils.client.KutilsClient
+import dev.hikari.commandspotify.client.CommandSpotifyClient
 import kotlinx.coroutines.runBlocking
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.client.MinecraftClient
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.ClickEvent
@@ -20,7 +19,7 @@ class Share {
             dispatcher.register(
                 CommandManager.literal("share")
                     .executes {
-                        //KutilsClient.logger.info("Test command executed")
+                        //CommandSpotifyClient.logger.info("Test command executed")
                         context ->
                         shareSpotify()
                         0
@@ -29,11 +28,11 @@ class Share {
         })
     }
     fun shareSpotify() {
-        KutilsClient.logger.info("Share Spotify command executed")
+        CommandSpotifyClient.logger.info("Share Spotify command executed")
         runBlocking {
-            var currentlyPlaying = KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.href.toString().replace("https://api.spotify.com/v1/tracks/", "https://open.spotify.com/track/")
+            var currentlyPlaying = CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.href.toString().replace("https://api.spotify.com/v1/tracks/", "https://open.spotify.com/track/")
             println(currentlyPlaying)
-            val clickableText = Text.literal("Currently playing " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name)
+            val clickableText = Text.literal("Currently playing " + CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name)
                 .setStyle(
                     Style.EMPTY
                         .withColor(Formatting.AQUA)
@@ -42,8 +41,8 @@ class Share {
                         .withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, currentlyPlaying))
                 )
             MinecraftClient.getInstance().networkHandler?.sendChatMessage(
-                "I'm currently listening to " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name +
-                        " by " + KutilsClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.artists?.get(0)?.name)
+                "I'm currently listening to " + CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.name +
+                        " by " + CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack?.artists?.get(0)?.name)
             MinecraftClient.getInstance().networkHandler?.sendChatMessage(
                 "Here's the web link! " + currentlyPlaying)
         }

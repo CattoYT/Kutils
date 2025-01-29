@@ -28,7 +28,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        register("kutils") {
+        register("commandspotify") {
             sourceSet("main")
             sourceSet("client")
         }

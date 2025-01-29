@@ -1,11 +1,7 @@
-package dev.hikari.kutils.client.utils
+package dev.hikari.commandspotify.client.utils
 
-import dev.hikari.kutils.client.KutilsClient
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import dev.hikari.commandspotify.client.CommandSpotifyClient
 import net.minecraft.client.MinecraftClient
-import org.apache.logging.log4j.core.appender.FileManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -14,7 +10,7 @@ import java.nio.file.Paths
 
 class FileManager {
     companion object {
-        val kutilsDir: Path = Paths.get(MinecraftClient.getInstance().runDirectory.toString(), "kutils")
+        val commandspotifyDir: Path = Paths.get(MinecraftClient.getInstance().runDirectory.toString(), "commandspotify")
     }
 
 
@@ -23,9 +19,9 @@ class FileManager {
     }
 
     fun writeToken(token : String) {
-        val configFile = kutilsDir.resolve("token")
+        val configFile = commandspotifyDir.resolve("token")
         if (!Files.exists(configFile)) {
-            Files.createDirectories(kutilsDir)
+            Files.createDirectories(commandspotifyDir)
             Files.createFile(configFile)
         }
 
@@ -36,7 +32,7 @@ class FileManager {
 
 
     fun readEncryptedToken(): String? {
-        val configFile = kutilsDir.resolve("token")
+        val configFile = commandspotifyDir.resolve("token")
 
         try {
             val (eToken, iv) = Files.readString(configFile).split("|")
@@ -45,7 +41,7 @@ class FileManager {
             }
             throw Exception()
         } catch (e: Exception) {
-            KutilsClient.logger.info("Token file not found or is empty! Skipping Spotify restore...")
+            CommandSpotifyClient.logger.info("Token file not found or is empty! Skipping Spotify restore...")
             println(e)
             return null
         }
@@ -53,18 +49,18 @@ class FileManager {
     }
 
     fun writeConfigFile() {
-        val configFile = kutilsDir.resolve("config.json")
-        if (!Files.exists(kutilsDir)) {
-            Files.createDirectories(kutilsDir)
+        val configFile = commandspotifyDir.resolve("config.json")
+        if (!Files.exists(commandspotifyDir)) {
+            Files.createDirectories(commandspotifyDir)
             Files.createFile(configFile)
         }
 
     }
     fun writeConfigFile(config : String) {
-        val configFile = kutilsDir.resolve("config.json")
+        val configFile = commandspotifyDir.resolve("config.json")
 //        val jsonString = Json.encodeToString(config)
-//        if (!Files.exists(kutilsDir)) {
-//            Files.createDirectories(kutilsDir)
+//        if (!Files.exists(commandspotifyDir)) {
+//            Files.createDirectories(commandspotifyDir)
 //            Files.createFile(configFile)
 //        }
         Files.writeString(configFile, config)
