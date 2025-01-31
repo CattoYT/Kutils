@@ -1,7 +1,7 @@
-package dev.hikari.commandspotify.client.commands
+package dev.hikari.SimpleSpotifyController.client.commands
 
 import com.mojang.brigadier.CommandDispatcher
-import dev.hikari.commandspotify.client.CommandSpotifyClient
+import dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import kotlinx.coroutines.runBlocking
 import net.minecraft.server.command.CommandManager
@@ -26,14 +26,14 @@ class Pause {
     }
 
     fun pauseSpotify() = runBlocking {
-        CommandSpotifyClient.logger.info("Pause Spotify command executed")
+        SimpleSpotifyControllerClient.Companion.logger.info("Pause Spotify command executed")
         runBlocking {
             try {
-                CommandSpotifyClient.Spotify.spotifyApi?.player?.pause()
-                CommandSpotifyClient.Log("Paused Spotify")
+                SimpleSpotifyControllerClient.Companion.Spotify.spotifyApi?.player?.pause()
+                SimpleSpotifyControllerClient.Companion.Log("Paused Spotify")
             } catch (e: Exception) {
-                CommandSpotifyClient.logger.error("Error pausing Spotify " + e)
-                CommandSpotifyClient.Log("Failed to pause Spotify!")
+                SimpleSpotifyControllerClient.Companion.logger.error("Error pausing Spotify " + e)
+                SimpleSpotifyControllerClient.Companion.Log("Failed to pause Spotify!")
                 }
         }
 

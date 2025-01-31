@@ -1,6 +1,6 @@
-package dev.hikari.commandspotify.client.utils
+package dev.hikari.SimpleSpotifyController.client.utils
 
-import dev.hikari.commandspotify.client.CommandSpotifyClient
+import dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient
 import net.minecraft.client.MinecraftClient
 import java.nio.file.Files
 import java.nio.file.Path
@@ -41,7 +41,7 @@ class FileManager {
             }
             throw Exception()
         } catch (e: Exception) {
-            CommandSpotifyClient.logger.info("Token file not found or is empty! Skipping Spotify restore...")
+            SimpleSpotifyControllerClient.Companion.logger.info("Token file not found or is empty! Skipping Spotify restore...")
             println(e)
             return null
         }

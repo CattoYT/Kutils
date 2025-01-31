@@ -1,8 +1,8 @@
-package dev.hikari.commandspotify.client.commands
+package dev.hikari.SimpleSpotifyController.client.commands
 
 import com.adamratzman.spotify.*
 import com.mojang.brigadier.CommandDispatcher
-import dev.hikari.commandspotify.client.CommandSpotifyClient
+import dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
@@ -51,7 +51,7 @@ class LinkSpotify {
             codeChallenge = codeChallenge
         )
 
-        CommandSpotifyClient.Spotify.initialize(
+        SimpleSpotifyControllerClient.Companion.Spotify.initialize(
             "a9e2b8d829d648f7ac6fac3dce2567cd",
             codeVerifier
         )
@@ -62,7 +62,7 @@ class LinkSpotify {
                     .withUnderline(true)
                     .withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, url))
             )
-        CommandSpotifyClient.Log(clickableText)
+        SimpleSpotifyControllerClient.Companion.Log(clickableText)
 
     }
 }

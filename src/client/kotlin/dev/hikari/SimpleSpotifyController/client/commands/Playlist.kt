@@ -1,8 +1,8 @@
-package dev.hikari.commandspotify.client.commands
+package dev.hikari.SimpleSpotifyController.client.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
-import dev.hikari.commandspotify.client.CommandSpotifyClient
+import dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient
 import kotlinx.coroutines.runBlocking
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.server.command.CommandManager
@@ -37,14 +37,14 @@ class Playlist {
     fun playPlaylist(name: String) : Int  {
         println(name)
         return runBlocking {
-            for (playlist in CommandSpotifyClient.Spotify.spotifyApi?.playlists?.getClientPlaylists()!!) {
+            for (playlist in SimpleSpotifyControllerClient.Companion.Spotify.spotifyApi?.playlists?.getClientPlaylists()!!) {
                 println(playlist.name.lowercase())
                 if (playlist.name.lowercase() == name.lowercase()) {
                     try{
-                        CommandSpotifyClient.Spotify.spotifyApi!!.player.startPlayback(playlistId = playlist.id)
+                        SimpleSpotifyControllerClient.Companion.Spotify.spotifyApi!!.player.startPlayback(playlistId = playlist.id)
                         return@runBlocking 0
                     } catch (e: Exception) {
-                        CommandSpotifyClient.logger.error("Error playing playlist: ${e.message}")
+                        SimpleSpotifyControllerClient.Companion.logger.error("Error playing playlist: ${e.message}")
                         return@runBlocking 1
                     }
 

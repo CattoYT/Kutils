@@ -1,8 +1,14 @@
-package dev.hikari.commandspotify.client
+package dev.hikari.SimpleSpotifyController.client
 
-import dev.hikari.commandspotify.client.commands.*
-import dev.hikari.commandspotify.client.modules.Spotify
-import dev.hikari.commandspotify.client.utils.FileManager
+import dev.hikari.SimpleSpotifyController.client.commands.LinkSpotify
+import dev.hikari.SimpleSpotifyController.client.commands.Pause
+import dev.hikari.SimpleSpotifyController.client.commands.Play
+import dev.hikari.SimpleSpotifyController.client.commands.Playing
+import dev.hikari.SimpleSpotifyController.client.commands.Playlist
+import dev.hikari.SimpleSpotifyController.client.commands.Share
+import dev.hikari.SimpleSpotifyController.client.commands.SimpleSpotifyControllerBaseCmd
+import dev.hikari.SimpleSpotifyController.client.modules.Spotify
+import dev.hikari.SimpleSpotifyController.client.utils.FileManager
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
@@ -10,14 +16,14 @@ import net.minecraft.text.Text
 import org.slf4j.LoggerFactory
 
 
-class CommandSpotifyClient : ClientModInitializer {
+class SimpleSpotifyControllerClient : ClientModInitializer {
 
 
     override fun onInitializeClient() {
         logger.info("Hello Fabric world!")
 
 
-        CommandSpotifyBaseCmd().register()
+        SimpleSpotifyControllerBaseCmd().register()
         LinkSpotify().register()
         Pause().register()
         Play().register()
@@ -28,8 +34,7 @@ class CommandSpotifyClient : ClientModInitializer {
 
     companion object {
 
-        val version =
-            FabricLoader.getInstance().getModContainer("commandspotify").map { it.metadata.version.friendlyString }.orElse(null)
+        val version = FabricLoader.getInstance().getModContainer("simplespotifycontroller")?.get()?.metadata?.version?.toString()
 
         val logger = LoggerFactory.getLogger("")
         val ConfigManager = FileManager()
@@ -44,7 +49,7 @@ class CommandSpotifyClient : ClientModInitializer {
         }
 
         fun createReturnMessage(vararg messages: Any): Text {
-            val combinedText = Text.literal("(§3CommandSpotify§f) ")
+            val combinedText = Text.literal("(§3SSC§f) ")
             messages.forEach { text ->
                 when (text) {
                     is String -> combinedText.append(Text.literal(text))

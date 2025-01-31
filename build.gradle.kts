@@ -28,7 +28,7 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        register("commandspotify") {
+        register("simplespotifycontroller") {
             sourceSet("main")
             sourceSet("client")
         }
@@ -74,6 +74,11 @@ tasks.processResources {
             "minecraft_version" to project.property("minecraft_version"),
             "loader_version" to project.property("loader_version"),
             "kotlin_loader_version" to project.property("kotlin_loader_version")
+        )
+    }
+    filesMatching("SimpleSpotifyControllerClient.kt") {
+        expand(
+            "mod_version" to project.version
         )
     }
 }

@@ -1,4 +1,4 @@
-package dev.hikari.commandspotify.client.utils
+package dev.hikari.SimpleSpotifyController.client.utils
 import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.crypto.Cipher

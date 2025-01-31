@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "id": "kutils",
+  "id": "simplespotifycontroller",
   "version": "${version}",
-  "name": "Kutils",
+  "name": "SimpleSpotifyController",
   "description": "",
   "authors": [],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "GPL-3.0",
 
   "environment": "client",
   "entrypoints": {
     "client": [
-      "dev.hikari.commandspotify.client.CommandSpotifyClient"
+      "dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient"
     ],
     "main": [
-      "dev.hikari.commandspotify.CommandSpotify"
+      "dev.hikari.SimpleSpotifyController.SimpleSpotifyController"
     ]
   },
   "mixins": [

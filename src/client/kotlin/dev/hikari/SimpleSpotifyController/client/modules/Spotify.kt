@@ -1,19 +1,22 @@
-package dev.hikari.commandspotify.client.modules
+package dev.hikari.SimpleSpotifyController.client.modules
 
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.models.Token
 import com.adamratzman.spotify.spotifyClientPkceApi
-import dev.hikari.commandspotify.client.CommandSpotifyClient
 import com.sun.net.httpserver.HttpServer
+import dev.hikari.SimpleSpotifyController.client.SimpleSpotifyControllerClient
 import java.net.InetSocketAddress
 import kotlinx.coroutines.runBlocking
 import java.net.BindException
+import java.security.SecureRandom
 
 class Spotify {
 
     var spotifyApi: SpotifyClientApi? = null
     var clientID: String? = "a9e2b8d829d648f7ac6fac3dce2567cd"
-    var codeVerifier: String? = "thisisaveryrandomalphanumericcodeverifierandisgreaterthan43characters"
+    var codeVerifier: String =     (1..43)
+        .map { "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[SecureRandom().nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".length)] }
+        .joinToString("") //secuirty:Tm:
     init {
         restoreSpotifyApi()
     }
@@ -25,7 +28,7 @@ class Spotify {
     fun initialize(clientID: String, codeVerifier: String) {
         this.clientID = clientID
         this.codeVerifier = codeVerifier
-        CommandSpotifyClient.logger.info("Initializing Spotify module")
+        SimpleSpotifyControllerClient.Companion.logger.info("Initializing Spotify module")
         // Open the localhost server to capture the authorization code
 
 
@@ -46,7 +49,7 @@ class Spotify {
                 automaticRefresh = true
             }.build()
         } catch (e: Exception) {
-            CommandSpotifyClient.logger.error("Failed to create Spotify API: ${e.message}")
+            SimpleSpotifyControllerClient.Companion.logger.error("Failed to create Spotify API: ${e.message}")
             null
         }
     }
@@ -59,11 +62,9 @@ class Spotify {
             val server = HttpServer.create(InetSocketAddress(8080), 0)
             server.createContext("/") { exchange ->
                 val queryParams = exchange.requestURI.query
-                CommandSpotifyClient.logger.info(queryParams)
                 if (queryParams != null && queryParams.contains("code")) {
                     val authorizationCode = queryParams.split("=")[1]
                     val response = "Code received! You may now close this tab."
-                    CommandSpotifyClient.logger.info(authorizationCode)
                     exchange.sendResponseHeaders(200, response.length.toLong())
                     exchange.responseBody.write(response.toByteArray())
                     exchange.responseBody.close()
@@ -72,11 +73,11 @@ class Spotify {
                     // Now that we have the code, initialize the Spotify API
                     runBlocking{
                         spotifyApi = createSpotifyApi(clientID!!, authorizationCode)
-                        CommandSpotifyClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+                        SimpleSpotifyControllerClient.Companion.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
 
                     }
                     if (spotifyApi != null) {
-                        CommandSpotifyClient.logger.info("Successfully created Spotify API")
+                        SimpleSpotifyControllerClient.Companion.logger.info("Successfully created Spotify API")
                         server.stop(0)
                     }
 
@@ -90,16 +91,15 @@ class Spotify {
         }
 
         catch (e: BindException) {
-            CommandSpotifyClient.logger.error("This port is already in use!")
+            SimpleSpotifyControllerClient.Companion.logger.error("This port is already in use!")
             return
         }
     }
     private fun restoreSpotifyApi() {
-        CommandSpotifyClient.logger.info("Restoring Spotify API")
-        var code = CommandSpotifyClient.ConfigManager.readEncryptedToken()
-            println(code)
+        SimpleSpotifyControllerClient.Companion.logger.info("Restoring Spotify API")
+        var code = SimpleSpotifyControllerClient.Companion.ConfigManager.readEncryptedToken()
             if (code != null) {
-                CommandSpotifyClient.logger.info("Found existing authorization code")
+                SimpleSpotifyControllerClient.Companion.logger.info("Found existing authorization code")
                 runBlocking {
                     try {
                         val token = Token(
@@ -123,31 +123,31 @@ class Spotify {
 
                         if (spotifyApi != null) {
                             if (spotifyApi?.isTokenValid()?.isValid == false) {
-                                CommandSpotifyClient.logger.info("Successfully restored Spotify API")
-                                CommandSpotifyClient.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
+                                SimpleSpotifyControllerClient.Companion.logger.info("Successfully restored Spotify API")
+                                SimpleSpotifyControllerClient.Companion.ConfigManager.writeToken(spotifyApi?.token?.refreshToken.toString())
                                 return@runBlocking
                             }
                         }
                         return@runBlocking
                     } catch (e: Exception) {
-                        CommandSpotifyClient.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
+                        SimpleSpotifyControllerClient.Companion.logger.error("Failed to create Spotify API: ${e.message}. Rehosting for new code.")
 
                     }
                 }
             } else {
-                CommandSpotifyClient.logger.info("No existing authorization code found")
+                SimpleSpotifyControllerClient.Companion.logger.info("No existing authorization code found")
             }
 
     }
     fun WhatIsPlaying() {
-        CommandSpotifyClient.logger.info("Pause Spotify command executed")
+        SimpleSpotifyControllerClient.Companion.logger.info("Pause Spotify command executed")
         runBlocking {
 
-            var currentlyPlaying = CommandSpotifyClient.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
+            var currentlyPlaying = SimpleSpotifyControllerClient.Companion.Spotify.spotifyApi?.player?.getCurrentlyPlaying()?.item?.asTrack
             if (currentlyPlaying == null) {
-                CommandSpotifyClient.Log("No song is currently playing")
+                SimpleSpotifyControllerClient.Companion.Log("No song is currently playing")
             } else {
-                CommandSpotifyClient.Log("Now Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
+                SimpleSpotifyControllerClient.Companion.Log("Now Playing: ${currentlyPlaying.name} - ${currentlyPlaying.artists[0].name}")
             }
 
         }
