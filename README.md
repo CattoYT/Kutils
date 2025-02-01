@@ -1,6 +1,6 @@
-# Command Spotify 
+# Simple Spotify Controller
 
-A Minecraft mod for Hack Club!
+A Minecraft mod for Hack Club, designed so thst you can use Spotify seamlessly from within Minecraft!
 
 ## Features
 - [x] pause 
@@ -13,7 +13,7 @@ A Minecraft mod for Hack Club!
 - [ ] create a song queue (add, remove, etc)
 
 
-As I was developing this, I found out that there was an existing mod called Kutils, but I already wrote half the base using that term so I just kept it.
+
 
 # DISCLAIMER!!!
 
