@@ -10,7 +10,7 @@ A Minecraft mod for Hack Club, designed so thst you can use Spotify seamlessly f
 - [x] share song to chat
 - [x] a command to get version info
 - [x] a command to show whats playing
-- [ ] create a song queue (add, remove, etc)
+- [x] create a song queue (add, remove, etc)
 
 
 
